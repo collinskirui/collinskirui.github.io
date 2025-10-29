@@ -1,3 +1,7 @@
+---
+layout: none
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,28 +18,37 @@
 <body>
 
 <h1>RSA Encryption Visualization</h1>
-<p>Interactive RSA charts load automatically below:</p>
+<p>Charts load automatically below:</p>
 
 <div id="plainHist"></div>
 <div id="cipherHist"></div>
 
 <script>
-  // Preprocessed text
-  const text = `loremipsumissimplydummytextoftheprintingandtypesettingindustryloremipsumhasbeentheindustrysstandarddummytexteversincewhenanunknownprintertookagalleyoftypeandscrambledittomakeatypespecimenbookithassurvivednotonlyfivecenturiesbutalsotheleapintoelectronictypesettingremainingessentiallyunchangeditwaspopularisedinthewiththereleaseofletrasetsheetscontainingloremipsumpassagesandmorerecentlywithdesktoppublishingsoftwarelikealduspmakeringversionsofloremipsum`;
+const text = `loremipsumissimplydummytextoftheprintingandtypesettingindustryloremipsumhasbeentheindustrysstandarddummytexteversincewhenanunknownprintertookagalleyoftypeandscrambledittomakeatypespecimenbookithassurvivednotonlyfivecenturiesbutalsotheleapintoelectronictypesettingremainingessentiallyunchangeditwaspopularisedinthewiththereleaseofletrasetsheetscontainingloremipsumpassagesandmorerecentlywithdesktoppublishingsoftwarelikealduspmakeringversionsofloremipsum`;
+const p=29,q=37,n=p*q,e=7;
+const letterToNumber={}; for(let i=0;i<26;i++) letterToNumber[String.fromCharCode(97+i)]=i;
 
-  const p = 29, q = 37, n = p*q, e = 7;
-  const letterToNumber = {};
-  for(let i=0;i<26;i++) letterToNumber[String.fromCharCode(97+i)] = i;
+// Plaintext frequencies
+const plainFreq=Array(26).fill(0);
+for(const c of text) if(c>='a' && c<='z') plainFreq[letterToNumber[c]]++;
 
-  // Plaintext frequencies
-  const plainFreq = Array(26).fill(0);
-  for(const c of text) if(c>='a' && c<='z') plainFreq[letterToNumber[c]]++;
+// Ciphertext
+function modPow(base,exp,mod){let r=1n,b=BigInt(base),m=BigInt(mod),ee=BigInt(exp);while(ee>0n){if(ee%2n===1n) r=(r*b)%m; ee/=2n; b=(b*b)%m;} return Number(r);}
+const cipherValues=[]; for(const c of text){if(c>='a'&&c<='z'){const M=letterToNumber[c]; cipherValues.push(modPow(M,e,n));}}
 
-  // Ciphertext values
-  function modPow(base, exp, mod){
-      let result = 1n, b = BigInt(base), m = BigInt(mod), ee = BigInt(exp);
-      while(ee>0n){ if(ee%2n===1n) result=(result*b)%m; ee/=2n; b=(b*b)%m; }
-      return Number(result);
-  }
+// Bin ciphertext
+const numBins=20,minC=Math.min(...cipherValues),maxC=Math.max(...cipherValues);
+const binSize=Math.ceil((maxC-minC+1)/numBins),bins=Array(numBins).fill(0);
+cipherValues.forEach(C=>{let i=Math.floor((C-minC)/binSize);if(i>=numBins)i=numBins-1;bins[i]++;});
+const binLabels=Array.from({length:numBins},(_,i)=>`${minC+i*binSize}–${minC+(i+1)*binSize-1}`);
+const letters=Array.from({length:26},(_,i)=>String.fromCharCode(97+i));
 
-  let cipherValues = [];
+// Plot charts
+Plotly.newPlot('plainHist',[{x:letters,y:plainFreq,type:'bar',marker:{color:'#1f77b4'}}],
+               {title:'Plaintext Letter Frequency',plot_bgcolor:'#222',paper_bgcolor:'#222',font:{color:'white'}});
+Plotly.newPlot('cipherHist',[{x:binLabels,y:bins,type:'bar',marker:{color:'#ff7f0e'}}],
+               {title:'Ciphertext Distribution (Binned)',plot_bgcolor:'#222',paper_bgcolor:'#222',font:{color:'white'}});
+</script>
+
+</body>
+</html>
