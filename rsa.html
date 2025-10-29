@@ -6,101 +6,36 @@
   <title>RSA Visualization</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
-    body {
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
-    #histContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 50px;
-      margin-top: 40px;
-    }
+    body { background:#111; color:#fff; font-family:Arial; text-align:center; padding:30px; }
+    h1 { margin-bottom: 20px; }
+    #plainHist, #cipherHist { width:90%; max-width:700px; height:400px; margin:40px auto; }
   </style>
 </head>
 <body>
 
-  <h1>📊 RSA Plaintext vs Ciphertext Distribution</h1>
+<h1>RSA Encryption Visualization</h1>
+<p>Interactive RSA charts load automatically below:</p>
 
-  <div id="histContainer">
-    <div id="plainHist" style="width:90%; max-width:700px; height:450px;"></div>
-    <div id="cipherHist" style="width:90%; max-width:700px; height:450px;"></div>
-  </div>
+<div id="plainHist"></div>
+<div id="cipherHist"></div>
 
-  <script>
-    const text = `loremipsumissimplydummytextoftheprintingandtypesettingindustryloremipsumhasbeentheindustrysstandarddummytexteversincewhenanunknownprintertookagalleyoftypeandscrambledittomakeatypespecimenbookithassurvivednotonlyfivecenturiesbutalsotheleapintoelectronictypesettingremainingessentiallyunchangeditwaspopularisedinthewiththereleaseofletrasetsheetscontainingloremipsumpassagesandmorerecentlywithdesktoppublishingsoftwarelikealduspmakeringversionsofloremipsum`;
+<script>
+  // Preprocessed text
+  const text = `loremipsumissimplydummytextoftheprintingandtypesettingindustryloremipsumhasbeentheindustrysstandarddummytexteversincewhenanunknownprintertookagalleyoftypeandscrambledittomakeatypespecimenbookithassurvivednotonlyfivecenturiesbutalsotheleapintoelectronictypesettingremainingessentiallyunchangeditwaspopularisedinthewiththereleaseofletrasetsheetscontainingloremipsumpassagesandmorerecentlywithdesktoppublishingsoftwarelikealduspmakeringversionsofloremipsum`;
 
-    const p = 29, q = 37, e = 7, n = p*q;
-    const letterToNumber = {};
-    for (let i = 0; i < 26; i++) letterToNumber[String.fromCharCode(97 + i)] = i;
+  const p = 29, q = 37, n = p*q, e = 7;
+  const letterToNumber = {};
+  for(let i=0;i<26;i++) letterToNumber[String.fromCharCode(97+i)] = i;
 
-    // Plaintext frequency
-    const plainFreq = Array(26).fill(0);
-    for (const c of text) if (c >= 'a' && c <= 'z') plainFreq[letterToNumber[c]]++;
+  // Plaintext frequencies
+  const plainFreq = Array(26).fill(0);
+  for(const c of text) if(c>='a' && c<='z') plainFreq[letterToNumber[c]]++;
 
-    // Ciphertext
-    function modPow(base, exp, mod) {
-      let result = 1n;
-      let b = BigInt(base), e2 = BigInt(exp), m = BigInt(mod);
-      while (e2 > 0n) {
-        if (e2 % 2n === 1n) result = (result * b) % m;
-        e2 /= 2n;
-        b = (b * b) % m;
-      }
+  // Ciphertext values
+  function modPow(base, exp, mod){
+      let result = 1n, b = BigInt(base), m = BigInt(mod), ee = BigInt(exp);
+      while(ee>0n){ if(ee%2n===1n) result=(result*b)%m; ee/=2n; b=(b*b)%m; }
       return Number(result);
-    }
+  }
 
-    const cipherValues = [];
-    for (const c of text) {
-      if (c >= 'a' && c <= 'z') {
-        const M = letterToNumber[c];
-        const C = modPow(M, e, n);
-        cipherValues.push(C);
-      }
-    }
-
-    // Bin ciphertext
-    const numBins = 20;
-    const minC = Math.min(...cipherValues);
-    const maxC = Math.max(...cipherValues);
-    const binSize = Math.ceil((maxC - minC + 1) / numBins);
-    const bins = Array(numBins).fill(0);
-    cipherValues.forEach(C => {
-      let i = Math.floor((C - minC) / binSize);
-      if (i >= numBins) i = numBins - 1;
-      bins[i]++;
-    });
-    const binLabels = Array.from({length: numBins}, (_, i) => `${minC + i * binSize}–${minC + (i + 1) * binSize - 1}`);
-
-    // Plot
-    Plotly.newPlot('plainHist', [{
-      x: Array.from({length:26},(_,i)=>String.fromCharCode(97+i)),
-      y: plainFreq,
-      type: 'bar',
-      marker: {color: '#1f77b4'}
-    }], {
-      title: 'Plaintext Letter Frequency',
-      paper_bgcolor:'#111',
-      plot_bgcolor:'#111',
-      font:{color:'white'}
-    });
-
-    Plotly.newPlot('cipherHist', [{
-      x: binLabels,
-      y: bins,
-      type: 'bar',
-      marker: {color: '#ff7f0e'}
-    }], {
-      title: 'Ciphertext Distribution (Binned)',
-      paper_bgcolor:'#111',
-      plot_bgcolor:'#111',
-      font:{color:'white'}
-    });
-  </script>
-
-</body>
-</html>
+  let cipherValues = [];
