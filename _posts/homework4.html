@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Law of Large Numbers</title>
+
+<!-- Plotly JS -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- MathJax -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background-color: #f5f5f5;
+    color: #222;
+}
+h2, h3 {
+    text-align: center;
+}
+#llnPlot, #histLLN {
+    width: 100%;
+    max-width: 850px;
+    height: 400px;
+    margin: 30px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+input {
+    width: 70px;
+    margin-left: 5px;
+    margin-right: 15px;
+}
+button {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.table-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 30px auto;
+    overflow-x: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+th {
+    background-color: #eee;
+}
+</style>
+</head>
+<body>
+
+<h1>Law of Large Numbers</h1>
+
+<p>
+<a href="https://www.probabilitycourse.com/chapter7/7_1_1_law_of_large_numbers.php" target="_blank">
+Law of Large Numbers (LLN)
+</a> is a fundamental principle in probability theory stating that as a random experiment is repeated many times, the average of outcomes converges to the expected value.
+</p>
+
+<p><em>For repeated, independent trials, the empirical mean (or relative frequency) stabilizes near the theoretical expectation as the number of trials increases.</em></p>
+
+<h2>Approach</h2>
+<p>
+Let X₁, X₂, …, Xₙ be independent and identically distributed random variables with expectation E[X]. The sample mean is:
+</p>
+
+<p>$$f(n) = \frac{X_1 + X_2 + \cdots + X_n}{n}$$</p>
+<p>According to LLN: $$f(n) \to E[X] \quad \text{as } n \to \infty$$</p>
+
+<p>
+We model Xᵢ as Bernoulli trials (success = 1, failure = 0) with success probability p = 0.3. Hence E[X] = p. As n grows, the relative frequency of successes converges to 0.3.
+</p>
+
+<h2>Simulation Testing</h2>
+<table>
+<tr>
+<th>Parameter</th><th>Description</th><th>Value</th>
+</tr>
+<tr><td>p</td><td>Success probability</td><td>0.3</td></tr>
+<tr><td>n</td><td>Number of trials</td><td>600</td></tr>
+<tr><td>m</td><td>Number of runs</td><td>10</td></tr>
+</table>
+
+<h2>🎲 Law of Large Numbers Simulation</h2>
+<div style="text-align:center; margin-bottom:20px;">
+  <label>Success probability (p):
+    <input id="pVal" type="number" value="0.3" step="0.05" min="0" max="1">
+  </label>
+  <label>Trials (n):
+    <input id="nVal" type="number" value="600" step="50" min="50">
+  </label>
+  <label>Runs (m):
+    <input id="mVal" type="number" value="10" step="1" min="1">
+  </label>
+  <button id="runBtn">▶ Run Simulation</button>
+</div>
+
+<div id="llnPlot"></div>
+
+<h2>📊 Distribution of Sample Means</h2>
+<div id="histLLN"></div>
+
+<div class="table-container">
+<h3>Illustrative Table</h3>
+<table>
+<tr><th>n</th><th>f(n) — Run 1</th><th>f(n) — Run 2</th><th>f(n) — Run 3</th><th>Target (p)</th></tr>
+<tr><td>40</td><td>0.28</td><td>0.32</td><td>0.25</td><td>0.30</td></tr>
+<tr><td>120</td><td>0.31</td><td>0.29</td><td>0.30</td><td>0.30</td></tr>
+<tr><td>300</td><td>0.30</td><td>0.32</td><td>0.28</td><td>0.30</td></tr>
+<tr><td>600</td><td>0.30</td><td>0.31</td><td>0.29</td><td>0.30</td></tr>
+<tr><td>1000</td><td>0.30</td><td>0.30</td><td>0.30</td><td>0.30</td></tr>
+</table>
+</div>
+
+<h3>Interpretation</h3>
+<ul>
+<li>At the beginning, f(n) fluctuates randomly.</li>
+<li>As trials increase, fluctuations decrease, and all trajectories cluster near p = 0.3.</li>
+<li>This illustrates the essence of the <strong>Law of Large Numbers</strong>.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<ul>
+<li>Random results become predictable in their average.</li>
+<li>Sample mean stabilizes near true probability p.</li>
+<li>Variability decreases as n increases.</li>
+</ul>
+
+<script>
+// LLN Simulation
+function runLLN() {
+    const p = parseFloat(document.getElementById('pVal').value);
+    const n = parseInt(document.getElementById('nVal').value);
+    const m = parseInt(document.getElementById('mVal').value);
+
+    let traces = [];
+    for (let i = 0; i < m; i++) {
+        const trials = Array.from({length:n}, () => Math.random() < p ? 1 : 0);
+        const runningMean = trials.map((_, j) => trials.slice(0, j+1).reduce((a,b)=>a+b,0)/(j+1));
+        traces.push({y: runningMean, type:'scatter', mode:'lines', name:'Run '+(i+1), line:{width:2}, opacity:0.8});
+    }
+
+    traces.push({y:Array(n).fill(p), type:'scatter', mode:'lines', name:'True Mean (p='+p+')', line:{dash:'dash', color:'black', width:2}});
+
+    const layout = {
+        title:'Law of Large Numbers Demonstration',
+        xaxis:{title:'Number of Trials', gridcolor:'#eee'},
+        yaxis:{title:'Running Mean', gridcolor:'#eee', range:[0,1]},
+        plot_bgcolor:'#fff',
+        paper_bgcolor:'#fff'
+    };
+
+    Plotly.newPlot('llnPlot', traces, layout, {responsive:true});
+}
+
+document.getElementById('runBtn').addEventListener('click', runLLN);
+window.onload = runLLN;
+
+// Histogram of Sample Means
+function plotHistogram() {
+    const p = 0.3;
+    const n = 600;
+    const runs = 1000;
+
+    let finalMeans = [];
+    for (let i = 0; i < runs; i++) {
+        const trials = Array.from({length:n}, ()=>Math.random() < p ? 1:0);
+        const mean = trials.reduce((a,b)=>a+b,0)/n;
+        finalMeans.push(mean);
+    }
+
+    const trace = {x: finalMeans, type:'histogram', marker:{color:'cyan', line:{color:'black', width:1}}, opacity:0.9, nbinsx:30};
+    const layout = {title:{text:'Histogram of Sample Means (p=0.3, n=600)'}, xaxis:{title:'Sample mean'}, yaxis:{title:'Frequency'}, plot_bgcolor:'#fff', paper_bgcolor:'#fff'};
+    Plotly.newPlot('histLLN', [trace], layout, {responsive:true});
+}
+
+plotHistogram();
+</script>
+
+</body>
+</html>
