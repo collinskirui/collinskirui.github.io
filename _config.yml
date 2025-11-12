@@ -16,7 +16,8 @@ timezone: CET
 
 title: Collins Kirui # the main title
 
-tagline: Msc Cybersecurity La Sapienza # it will display as the subtitle
+tagline: Statistics - Msc Cybersecurity  
+         2240026 # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   CollinsKirui, Blog, Github, Cybersecurity, Networking
