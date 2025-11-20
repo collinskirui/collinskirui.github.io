@@ -1,0 +1,36 @@
+<div class="block">
+  <strong style="font-size:16px"> Simulation</strong>
+  <div style="font-size:12px; color:#9aa7b2">Trajectory & distribution (bars + Poisson PMF)</div>
+
+  <div class="controls" style="margin-top:14px">
+    <label>λ
+      <input id="inp_lambda" type="number" value="5" min="0.01" step="0.1">
+    </label>
+
+    <label>T
+      <input id="inp_T" type="number" value="1" min="0.01" step="0.1">
+    </label>
+
+    <label>N_steps
+      <input id="inp_Nsteps" type="number" value="5000" min="100" step="100">
+    </label>
+
+    <button class="btn">Generate</button>
+  </div>
+
+  <div class="section">
+    <h2>1) Trajectory N(t)</h2>
+    <div id="plot_traj" class="plot"></div>
+    <small class="note">
+      Trajectory uses Bernoulli approximation with N_steps partitions.
+    </small>
+  </div>
+
+  <div class="section">
+    <h2>2) Distribution of N(T)</h2>
+    <div id="plot_dist" class="plot"></div>
+    <small class="note">
+      Histogram uses <b>N_steps</b> samples. Curve is Poisson(λT).
+    </small>
+  </div>
+</div>
