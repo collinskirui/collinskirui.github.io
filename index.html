@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<div class="hero">
+  <div class="prompt"><b>$</b> <span id="typed"></span><span class="cur"></span></div>
+  <h1>{{ site.title }}</h1>
+  <p class="lead">{{ site.description }}</p>
+</div>
+<h2>Latest posts</h2>
+{% for p in site.posts limit: 3 %}{% include item.html item=p %}{% endfor %}
+<h2>Projects</h2>
+{% for p in site.projects limit: 3 %}{% include item.html item=p %}{% endfor %}
+<h2>Assignments</h2>
+{% for p in site.assignments limit: 3 %}{% include item.html item=p %}{% endfor %}
+<script>(function(){var e=document.getElementById('typed'),t='whoami',i=0;
+if(matchMedia('(prefers-reduced-motion:reduce)').matches){e.textContent=t;return}
+(function n(){e.textContent=t.slice(0,++i);if(i<t.length)setTimeout(n,110)})()})();</script>

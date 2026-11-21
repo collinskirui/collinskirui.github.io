@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<article class="doc">
+  <a class="back" href="javascript:history.back()">← cd ../</a>
+  <h1>{{ page.title }}</h1>
+  <div class="tags">
+    {% if page.topic %}<a class="tag" href="{{ '/topics/' | relative_url }}#{{ page.topic | slugify }}">#{{ page.topic }}</a>{% endif %}
+    {% if page.date %}<span class="tag">{{ page.date | date: "%d %b %Y" }}</span>{% endif %}
+    {% if page.course %}<span class="tag">{{ page.course }}</span>{% endif %}
+    {% if page.status %}<span class="tag">{{ page.status }}</span>{% endif %}
+    {% if page.repo %}<a class="tag" href="{{ page.repo }}">source</a>{% endif %}
+  </div>
+  <div class="prose">{{ content }}</div>
+</article>

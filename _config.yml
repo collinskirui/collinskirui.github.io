@@ -1,0 +1,20 @@
+title: Kirui
+handle: kirui
+description: Software engineer. Notes, projects and coursework.
+email: you@example.com
+github: https://github.com/collinskirui
+baseurl: "/kirui.github.io"
+url: "https://collinskirui.github.io"
+permalink: /blog/:title/
+nav:
+  - {name: Blog, url: /blog/}
+  - {name: Projects, url: /projects/}
+  - {name: Assignments, url: /assignments/}
+  - {name: Topics, url: /topics/}
+collections:
+  projects:    {output: true, permalink: /projects/:name/}
+  assignments: {output: true, permalink: /assignments/:name/}
+defaults:
+  - {scope: {path: "", type: posts},       values: {layout: post}}
+  - {scope: {path: "", type: projects},    values: {layout: post}}
+  - {scope: {path: "", type: assignments}, values: {layout: post}}

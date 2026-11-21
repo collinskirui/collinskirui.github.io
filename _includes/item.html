@@ -1,0 +1,10 @@
+{% assign i = include.item %}
+<a class="proj" href="{{ i.url | relative_url }}">
+  <h3><span>$ cd</span> {{ i.title }}</h3>
+  <p>{{ i.summary | default: i.excerpt | strip_html | strip | truncate: 150 }}</p>
+  <div class="tags">
+    {% if i.topic %}<span class="tag">#{{ i.topic }}</span>{% endif %}
+    {% if i.course %}<span class="tag">{{ i.course }}</span>{% endif %}
+    {% if i.date %}<span class="tag">{{ i.date | date: "%d %b %Y" }}</span>{% endif %}
+  </div>
+</a>

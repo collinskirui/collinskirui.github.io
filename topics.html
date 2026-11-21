@@ -1,0 +1,12 @@
+---
+layout: default
+title: Topics
+permalink: /topics/
+---
+<h1 class="pt">Topics</h1>
+{% assign groups = site.documents | group_by: "topic" | sort: "name" %}
+{% for g in groups %}{% if g.name != "" %}
+<section id="{{ g.name | slugify }}"><h2>{{ g.name }}</h2>
+  {% for d in g.items %}<a class="post" href="{{ d.url | relative_url }}"><time>{{ d.collection }}</time><span>{{ d.title }}</span></a>{% endfor %}
+</section>
+{% endif %}{% endfor %}
