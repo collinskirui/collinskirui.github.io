@@ -3,5 +3,9 @@ layout: default
 title: Projects
 permalink: /projects/
 ---
-<h1 class="pt">Projects</h1>
-{% for p in site.projects %}{% include item.html item=p %}{% endfor %}
+<section>
+  <h2>Projects</h2>
+  {% for p in site.projects %}{% include item.html item=p %}{% else %}
+  <p class="note">Project write-ups are on the way.</p>
+  {% endfor %}
+</section>

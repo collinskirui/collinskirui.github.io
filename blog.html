@@ -3,5 +3,9 @@ layout: default
 title: Blog
 permalink: /blog/
 ---
-<h1 class="pt">Blog</h1>
-{% for p in site.posts %}{% include item.html item=p %}{% endfor %}
+<section>
+  <h2>Blog</h2>
+  {% for p in site.posts %}{% include item.html item=p %}{% else %}
+  <p class="note">The first posts are on the way.</p>
+  {% endfor %}
+</section>

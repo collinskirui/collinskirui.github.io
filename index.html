@@ -2,16 +2,24 @@
 layout: default
 ---
 <div class="hero">
-  <div class="prompt"><b>$</b> <span id="typed"></span><span class="cur"></span></div>
-  <h1>{{ site.title }}</h1>
-  <p class="lead">{{ site.description }}</p>
+  <div class="crumb"><b>$</b> <span id="typed" data-text="whoami"></span><span class="cur" id="cur"></span></div>
+  <h1><span id="nm" data-text="Collins Kirui"></span></h1>
+  <p class="sub rh">Infrastructure, network, cloud and security engineer</p>
+  <p class="tagline"><span id="tag" data-text="I build and protect the systems businesses run on."></span></p>
+  <p class="lead">Hands-on across networks, virtualization, cloud, telephony and access control, with specialist depth in security. Open to roles across IT, infrastructure and security.</p>
+  <div class="tags"><span class="tag">#infrastructure</span><span class="tag">#networking</span><span class="tag">#cloud</span><span class="tag">#security</span></div>
+  <a class="btn solid" href="{{ '/projects/' | relative_url }}">View projects</a><a class="btn" href="{{ '/about/' | relative_url }}">About me</a>
 </div>
-<h2>Latest posts</h2>
-{% for p in site.posts limit: 3 %}{% include item.html item=p %}{% endfor %}
-<h2>Projects</h2>
-{% for p in site.projects limit: 3 %}{% include item.html item=p %}{% endfor %}
-<h2>Assignments</h2>
-{% for p in site.assignments limit: 3 %}{% include item.html item=p %}{% endfor %}
-<script>(function(){var e=document.getElementById('typed'),t='whoami',i=0;
-if(matchMedia('(prefers-reduced-motion:reduce)').matches){e.textContent=t;return}
-(function n(){e.textContent=t.slice(0,++i);if(i<t.length)setTimeout(n,110)})()})();</script>
+<section><div class="three">
+  <div><svg class="ico"><use href="#i-layers"/></svg><h3>Build.</h3><p>Networks, virtual and cloud environments, and telephony, designed to be reliable from day one.</p></div>
+  <div><svg class="ico"><use href="#i-act"/></svg><h3>Run.</h3><p>Monitoring, backups and support that hold a 99.9% uptime target.</p></div>
+  <div><svg class="ico"><use href="#i-shield"/></svg><h3>Protect.</h3><p>Access control, security tooling and specialist depth in malware analysis and forensics.</p></div>
+</div></section>
+<section id="surface">
+  <h2>Systems I run</h2>
+  <p class="lead">Pick a part of the stack to see how I run it and how I protect it.</p>
+  <div class="map">
+    <svg id="map" viewBox="0 0 500 400" role="img" aria-label="Enterprise systems diagram"></svg>
+    <div><div id="panel" aria-live="polite"><svg class="ico"><use id="pi" href="#i-net"/></svg><h3></h3><p></p></div><div class="chips" id="chips"></div></div>
+  </div>
+</section>

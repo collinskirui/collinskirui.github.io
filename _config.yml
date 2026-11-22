@@ -1,20 +1,20 @@
-title: Kirui
-handle: kirui
-description: Software engineer. Notes, projects and coursework.
-email: you@example.com
+title: Collins Kirui
+description: Infrastructure, network, cloud and security engineer.
+linkedin: https://www.linkedin.com/in/kiruicollins/
 github: https://github.com/collinskirui
 baseurl: "/kirui.github.io"
 url: "https://collinskirui.github.io"
 permalink: /blog/:title/
+exclude: [README.md]
 nav:
-  - {name: Blog, url: /blog/}
-  - {name: Projects, url: /projects/}
-  - {name: Assignments, url: /assignments/}
-  - {name: Topics, url: /topics/}
+  - {name: Home, url: "/"}
+  - {name: About, url: "/about/"}
+  - {name: Skills, url: "/skills/"}
+  - {name: Projects, url: "/projects/"}
+  - {name: Blog, url: "/blog/"}
+  - {name: Contact, url: "/contact/"}
 collections:
-  projects:    {output: true, permalink: /projects/:name/}
-  assignments: {output: true, permalink: /assignments/:name/}
+  projects: {output: true, permalink: /projects/:name/}
 defaults:
-  - {scope: {path: "", type: posts},       values: {layout: post}}
-  - {scope: {path: "", type: projects},    values: {layout: post}}
-  - {scope: {path: "", type: assignments}, values: {layout: post}}
+  - {scope: {path: "", type: posts},    values: {layout: post}}
+  - {scope: {path: "", type: projects}, values: {layout: post}}
