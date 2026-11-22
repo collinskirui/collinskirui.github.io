@@ -1,0 +1,33 @@
+<div class="maint" data-text="{{ include.text }}">
+  <svg class="maint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+    <circle cx="12" cy="12" r="8.5" stroke-width="3" stroke-dasharray="3.3 3.3"/>
+    <circle cx="12" cy="12" r="6" stroke-width="2"/>
+    <circle cx="12" cy="12" r="2" stroke-width="2"/>
+  </svg>
+  <div>
+    <p class="maint-title">{{ include.title }}</p>
+    <p class="maint-text"><span class="maint-type">{{ include.text }}</span><span class="maint-cursor"></span></p>
+  </div>
+</div>
+<style>
+.maint{display:flex;gap:1rem;align-items:flex-start;border:1px solid #00ff41;padding:1.2rem 1.5rem;margin:1.5rem 0}
+.maint-icon{width:36px;height:36px;flex:none;color:#00ff41;animation:maint-spin 8s linear infinite}
+@keyframes maint-spin{to{transform:rotate(360deg)}}
+.maint-title{margin:0 0 .4rem;font-weight:600}
+.maint-text{margin:0;min-height:3.2em}
+.maint-cursor{display:inline-block;width:.55em;height:1em;background:#00ff41;margin-left:2px;vertical-align:-.15em;animation:maint-blink 1s step-end infinite}
+@keyframes maint-blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.maint-icon,.maint-cursor{animation:none}}
+</style>
+<script>
+(function(){
+  document.querySelectorAll('.maint').forEach(function(box){
+    var text = box.getAttribute('data-text') || '';
+    var out = box.querySelector('.maint-type');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    out.textContent = '';
+    var i = 0;
+    (function tick(){ out.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(tick, 45); })();
+  });
+})();
+</script>

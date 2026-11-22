@@ -9,3 +9,7 @@ permalink: /blog/
   <p class="note">The first posts are on the way.</p>
   {% endfor %}
 </section>
+
+{% if site.posts.size == 0 %}
+{% include maintenance.html title="Under maintenance" text="Technical articles on infrastructure, networking, cloud and security are being prepared. Please check back soon." %}
+{% endif %}

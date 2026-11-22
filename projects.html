@@ -9,3 +9,7 @@ permalink: /projects/
   <p class="note">Project write-ups are on the way.</p>
   {% endfor %}
 </section>
+
+{% if site.projects.size == 0 %}
+{% include maintenance.html title="Under maintenance" text="Selected work in networking, cloud and security is being prepared. Please check back soon." %}
+{% endif %}
