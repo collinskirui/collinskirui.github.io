@@ -2,7 +2,7 @@ title: Collins Kirui
 description: Infrastructure, network, cloud and security engineer.
 linkedin: https://www.linkedin.com/in/kiruicollins/
 github: https://github.com/collinskirui
-baseurl: "/kirui.github.io"
+baseurl: ""
 url: "https://collinskirui.github.io"
 permalink: /blog/:title/
 exclude: [README.md]
